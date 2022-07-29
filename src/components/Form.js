@@ -4,6 +4,7 @@ function Form() {
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Henry");
   const [submittedData, setSubmittedData] = useState([]);
+  const [errors, setErrors] = useState([]);
 
   function handleFirstNameChange(event) {
     setFirstName(event.target.value);
@@ -13,12 +14,9 @@ function Form() {
     setLastName(event.target.value);
   }
 
-  const [errors, setErrors] = useState([]);
-
-function handleSubmit(event) {
-  event.preventDefault();
-  // first name is required
-  if (firstName.length > 0) {
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (firstName.length > 0) {
     const formData = { firstName: firstName, lastName: lastName };
     const dataArray = [...submittedData, formData];
     setSubmittedData(dataArray);
@@ -28,7 +26,7 @@ function handleSubmit(event) {
   } else {
     setErrors(["First name is required!"]);
   }
-}
+  }
 
   const listOfSubmissions = submittedData.map((data, index) => {
     return (
@@ -37,6 +35,7 @@ function handleSubmit(event) {
       </div>
     );
   });
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -44,14 +43,13 @@ function handleSubmit(event) {
         <input type="text" onChange={handleLastNameChange} value={lastName} />
         <button type="submit">Submit</button>
       </form>
-      {/* conditionally render error messages */}
       {errors.length > 0
-        ? errors.map((error, index) => (
-            <p key={index} style={{ color: "red" }}>
-              {error}
-            </p>
-          ))
-        : null}
+      ? errors.map((error, index) => (
+          <p key={index} style={{ color: "red" }}>
+            {error}
+          </p>
+        ))
+      : null}
       <h3>Submissions</h3>
       {listOfSubmissions}
     </div>
